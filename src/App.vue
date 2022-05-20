@@ -1,10 +1,37 @@
 <template>
-  <p>Hi Tic</p>
-  <button @click="checkIsWinner">click</button>
+  <main
+    class="d-flex flex-column justify-content-center align-items-center bg-dark"
+  >
+    <div class="container">
+      <div class="row justify-content-center mt-3">
+        <div class="col col-6">
+          <div class="text-center">
+            <div v-if="!winMessage">
+              <h1 class="text-info" v-show="isCross">Cross's Turn</h1>
+              <h1 class="text-info" v-show="!isCross">Circle's Turn</h1>
+            </div>
+            <div v-else>
+              <h1 class="text-warning">{{ winMessage.toUpperCase() }}</h1>
+            </div>
+          </div>
+          <div class="grid">
+            <div
+              v-for="(item, i) in itemArr"
+              @click="handleClick(i)"
+              :key="i"
+              class="card card-body box justify-content-center align-items-center bg-light"
+            >
+              <Icon :iconName="'empty'"></Icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 </template>
 
 <script>
-import Icon from "./components/Icon.vue";
+import Icon from "./components/Icon-comp.vue";
 import Swal from "sweetalert2/dist/sweetalert2";
 
 export default {
@@ -14,8 +41,7 @@ export default {
     return {
       winMessage: "",
       isCross: true,
-      itemArray: [],
-      // itemArr: new Array(9).fill("empty"),
+      itemArr: new Array(9).fill("empty"),
     };
   },
   watch: {
@@ -41,6 +67,7 @@ export default {
       if (this.itemArray[itemNum]) {
         this.itemArray[itemNum] = this.isCross ? "cross" : "circle";
         this.isCross = !this.isCross;
+        console.log(this.isCross);
       } else {
         return Swal.fire("Already filled");
       }
