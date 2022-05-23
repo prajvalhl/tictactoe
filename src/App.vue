@@ -6,7 +6,7 @@
       <div class="row justify-content-center mt-3">
         <div class="col col-6">
           <div class="text-center">
-            <div v-if="!winMessage">
+            <div v-if="!winMessage" @click="print">
               <h1 class="text-info" v-show="isCross">Cross's Turn</h1>
               <h1 class="text-info" v-show="!isCross">Circle's Turn</h1>
             </div>
@@ -16,13 +16,16 @@
           </div>
           <div class="grid">
             <div
-              v-for="(item, i) in itemArr"
+              v-for="(item, i) in itemArray"
               @click="handleClick(i)"
               :key="i"
               class="card card-body box justify-content-center align-items-center bg-light"
             >
-              <Icon :iconName="'empty'"></Icon>
+              <IconComponent :iconName="item"></IconComponent>
             </div>
+          </div>
+          <div class="text-center mt-3" @click="reloadGame" v-if="winMessage">
+            <button class="btn btn-danger">Reload Game</button>
           </div>
         </div>
       </div>
@@ -31,17 +34,17 @@
 </template>
 
 <script>
-import Icon from "./components/Icon-comp.vue";
+import IconComponent from "./components/IconComponent.vue";
 import Swal from "sweetalert2/dist/sweetalert2";
 
 export default {
   name: "App",
-  components: { Icon },
+  components: { IconComponent },
   data() {
     return {
       winMessage: "",
       isCross: true,
-      itemArr: new Array(9).fill("empty"),
+      itemArray: new Array(9),
     };
   },
   watch: {
@@ -64,10 +67,9 @@ export default {
         return this.showDialog();
       }
 
-      if (this.itemArray[itemNum]) {
+      if (!this.itemArray[itemNum]) {
         this.itemArray[itemNum] = this.isCross ? "cross" : "circle";
         this.isCross = !this.isCross;
-        console.log(this.isCross);
       } else {
         return Swal.fire("Already filled");
       }
@@ -126,7 +128,9 @@ export default {
       }
     },
     reloadGame() {
-      (this.winMsg = ""), (this.isCross = true), (this.itemArr = []);
+      (this.winMessage = ""),
+        (this.isCross = true),
+        (this.itemArray = new Array(9));
     },
   },
 };

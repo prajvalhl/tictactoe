@@ -8,12 +8,7 @@
       class="fa fa-times fa-4x zoomIn text-primary"
       v-else-if="iconName === 'cross'"
     ></i>
-    <img
-      src="../assets/logo.png"
-      alt=""
-      class="img-fluid zoomIn"
-      v-else-if="iconName === 'empty'"
-    />
+    <img src="../assets/logo.png" alt="" class="img-fluid zoomIn" v-else />
   </div>
 </template>
 
